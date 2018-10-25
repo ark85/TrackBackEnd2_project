@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+    <div>
+        Logged out
+        <br>
+        <a href="{% url "core:login" %}">Back to login</a>
+    </div>
+{% endblock content %}

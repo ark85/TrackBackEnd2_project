@@ -1,0 +1,12 @@
+{% extends "core/base.html"%}
+{% load crispy_forms_tags %}
+
+{% block title %}SOF Questions{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input class="btn" type="submit" value="Create">
+    </form>
+{% endblock %}

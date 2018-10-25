@@ -1,0 +1,28 @@
+{% extends "core/base.html"%}
+{% load crispy_forms_tags %}
+
+{% block title %}SOF Categories{% endblock %}
+
+{% block username %}
+    {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>Edit category: {{ category.name }}</h2>
+
+    {% if category.author == user %}
+        <a href="{% url "categories:category_details" category_id=category.id %}">Back to details</a>
+    {% endif %}
+
+    <br>
+
+    <form class="form-text ajaxform" style="width: 50%" action="" method="post"
+          data-url="{% url "categories:category_edit" category_id=object.id %}"
+    >
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input style="width: 50%" class="btn btn-lg btn-primary btn-block"
+               type="submit" value="Edit">
+    </form>
+{% endblock %}

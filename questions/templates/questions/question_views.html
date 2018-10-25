@@ -1,0 +1,50 @@
+{% extends "core/base.html"%}
+{% load crispy_forms_tags %}
+
+{% block title %}SOF Questions{% endblock %}
+
+{% block username %}
+    {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+
+    <div style="padding-top:5000px">
+        <a href="{% url "questions:question_create" %}">Create new question</a>
+    </div>
+    <br>
+    <br>
+
+    <form action="" method="get">
+        {{ questions_form | crispy }}
+        <button>Go</button>
+    </form>
+
+    <br>
+    <br>
+        <div data-spy="scroll" data-target="#list-questions">
+        <div id="list-questions">
+            {% for question in questions %}
+                <div class="card">
+                    <div class="card-header">
+                        <a href="{% url "questions:question_details" question_id=question.id %}">
+                            {{ question.name|default:'no name' }}
+                        </a>
+                    </div>
+                    <div class="card-body col-2 text-truncate">
+                        <p>
+                            {{ question.content|default:'no name' }}
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <p>
+                            {{ question.likes|default:'no name' }}
+                        </p>
+                    </div>
+                </div><br>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

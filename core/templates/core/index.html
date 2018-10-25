@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% block title %}Welcome{% endblock %}
+
+{% block username %}
+    {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+
+
+    <div>
+        <h1><b>Welcome to Stackoverflow</b></h1>
+        <br>
+        <a href="{% url "core:login" %}">Login</a>
+        <br>
+        <a href="{% url "core:register" %}">Register</a>
+        <br>
+        <a href="{% url "categories:categories" %}">Categories</a>
+        <br>
+        <a href="{% url "questions:questions" %}">Questions</a>
+    </div>
+{% endblock content %}

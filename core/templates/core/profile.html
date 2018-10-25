@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+{% block title %}User profile{% endblock %}
+
+{% block content %}
+    <div>
+    <form action="" method="post">
+        {% csrf_token %}
+        User profile
+    </form>
+    </div>
+{% endblock content %}

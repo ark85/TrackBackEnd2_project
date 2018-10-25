@@ -1,0 +1,20 @@
+{#{% extends "core/base.html"%}#}
+{##}
+{#{% block title %}SOF Question{% endblock %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#    <h2>Edit question: {{ question.name }}</h2>#}
+{##}
+{#    {% if question.author == user %}#}
+{#        <a href="{% url "questions:question_details" question_id=question.id %}">Back to details</a>#}
+{#    {% endif %}#}
+{##}
+{#    <br>#}
+{##}
+{#    <form action="" method="post">#}
+{#        {% csrf_token %}#}
+{#        {{ form }}#}
+{#        <input type="submit" value="Edit">#}
+{#    </form>#}
+{#{% endblock %}#}

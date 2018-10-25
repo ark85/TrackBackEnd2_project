@@ -1,0 +1,8 @@
+{% load crispy_forms_tags %}
+<form id="category-create-id" class="ajaxform" action="" method="post"
+    data-url="{% url "categories:category_create" %}"
+>
+    {% csrf_token %}
+    {{ form | crispy }}
+    <input class="btn submit-creation" type="submit" value="Create">
+</form>

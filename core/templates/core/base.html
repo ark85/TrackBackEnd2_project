@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static "bootstrap/dist/css/bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "base.css" %}" crossorigin="anonymous">
+
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="body">
+    <!-- Fixed navbar -->
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="/">Stackoverflow</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mr-auto">
+              </ul>
+
+            {% block search %}{% endblock %}
+
+            <div class="text-white">
+                Welcome,
+                <strong>
+                    {% block username %}
+                        user
+                    {% endblock %}
+                </strong>
+                <a href="/logout/">Log out</a>
+            </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <footer class="blog-footer">
+          <div class="container">
+            <span class="text-muted">Blog Facebook Twitter LinkedIn</span>
+          </div>
+        </footer>
+    </main>
+
+
+    <script src="{% static "jquery-3.3.1.min.js" %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="{% static "bootstrap/dist/js/bootstrap.js" %}"></script>
+    <script src="{% static "base.js" %}"></script>
+
+</body>
+</html>

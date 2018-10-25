@@ -1,0 +1,29 @@
+{% extends "core/base.html"%}
+{% load crispy_forms_tags %}
+
+{% block title %}SOF Question{% endblock %}
+
+{% block username %}
+    {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>Edit question: {{ question.name }}</h2>
+
+    {% if question.author == request.user.username %}
+        <a href="{% url "questions:question_details" question_id=question.id %}">Back to details</a>
+    {% endif %}
+
+    <br>
+
+    <div class="row">
+        <div class="col-6">
+            <form class="form-group" action="" method="post">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Edit">
+            </form>
+        </div>
+    </div>
+{% endblock %}

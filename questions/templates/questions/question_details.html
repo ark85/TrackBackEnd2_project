@@ -1,0 +1,51 @@
+{% extends "core/base.html" %}
+
+{% block title %}SOF Question{% endblock %}
+
+{% block username %}
+    {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+    <h2>Question: {{ question.name }}</h2>
+    <a href="{% url "questions:questions" %}">All questions</a>
+
+    <br>
+
+    {% if question.author == user %}
+        <a href="{% url "questions:question_edit" question_id=question.id %}">Edit current question</a>
+    {% endif %}
+
+    <br>
+
+    {{ question.id }}<br>
+    {{ question.name}}<br>
+    {{ question.content}}<br>
+    {{ question.created }}<br><br>
+
+{##}
+{#    Likes: <span class="likescount" data-likes-url="{% url "questions:question_likes" pk=question.pk %}">---</span>#}
+
+    <h4>Categories:</h4>
+    {% for category in question.categories.all %}
+        <div>
+            <a href="{% url "categories:category_details" category_id=category.id %}">
+                {{ category.name|default:"no name" }}
+            </a>
+        </div>
+    {% endfor %}
+
+
+    <h4>Answers:</h4>
+
+    <div>
+        <a href="{% url "answers:answer_create" %}">Create new answer</a>
+    </div>
+    {% for answer in question.answers.all %}
+        <div>
+            {{ answer.content }}<br>
+            {{ answer.created }}
+        </div>
+    {% endfor %}
+
+{% endblock %}

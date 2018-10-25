@@ -1,0 +1,30 @@
+{#{% extends "core/base.html" %}#}
+{##}
+{#{% block title %}SOF Answer{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#    <h2>Answer: {{ answer.name }}</h2>#}
+{#    <a href="{% url "questions:questions" %}">All questions</a>#}
+{##}
+{#    <br>#}
+{##}
+{#    {% if question.author == user %}#}
+{#        <a href="{% url "questions:question_edit" question_id=question.id %}">Edit current question</a>#}
+{#    {% endif %}#}
+{##}
+{#    <br>#}
+{##}
+{#    {{ question.id }}<br>#}
+{#    {{ question.name}}<br>#}
+{#    {{ question.created }}<br><br>#}
+{##}
+{#    <h4>Categories:</h4>#}
+{#    {% for category in question.categories.all %}#}
+{#        <div>#}
+{#            <a href="{% url "categories:category_details" category_id=category.id %}">#}
+{#                {{ category.name|default:"no name" }}#}
+{#            </a>#}
+{#        </div>#}
+{#    {% endfor %}#}
+{##}
+{#{% endblock %}#}

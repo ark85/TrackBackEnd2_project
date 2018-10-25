@@ -1,0 +1,21 @@
+<div class="b-silly-popup" id="{{ id }}">
+    <div class="b-silly-popup__content">
+        <a class="b-silly-popup__close" href="#"></a>
+        {% if heading %}<h2>{{ heading }}</h2>{% endif %}
+
+        {% block content %}
+            {% if form %}
+                <form action="{{ action }}#" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">{{ action_title }}</button>
+                </form>
+            {% else %}
+                {{ content }}
+                <form action="#">
+                    <button type="submit">{{ action_title }}</button>
+                </form>
+            {% endif %}
+        {% endblock %}
+    </div>
+</div>

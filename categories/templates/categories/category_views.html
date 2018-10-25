@@ -1,0 +1,63 @@
+{% extends "core/base.html"%}
+{% load crispy_forms_tags %}
+
+{% block title %}SOF Categories{% endblock %}
+
+{% block username %}
+    {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+
+    <div style="padding-top: 50%">
+{#        <a href="{% url "core:logout" %}">Logout</a>#}
+    </div>
+
+    <div class="modal fade" id="category-new-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div id="category-new-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a
+            href="{% url "categories:category_create" %}"
+            data-url="{% url "categories:category_create" %}"
+            class="btn btn-info"
+            id="category-new-a"
+            data-toggle="modal"
+            data-target="#category-new-modal"
+    >
+        Create new category
+    </a>
+
+    <br>
+    <br>
+
+    <div class="col-6">
+        <form action="" method="get">
+            {{ categories_form | crispy }}
+            <button class="btn">Go</button>
+        </form>
+    </div>
+
+    <br>
+    <br>
+
+    <table class="table">
+        {% for category in categories %}
+            <tr>
+                <th>
+                    <div>
+                        <a href="{% url "categories:category_details" category_id=category.id %}">
+                            {{ category.name|default:"no name" }}
+                        </a>
+                    </div>
+                </th>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

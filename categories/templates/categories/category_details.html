@@ -1,0 +1,29 @@
+{% extends "core/base.html" %}
+
+{% block title %}SOF Category{% endblock %}
+
+{% block username %}
+    {{ request.user.username }}
+{% endblock %}
+
+{% block content %}
+    <h2>Category: {{ category.name }}</h2>
+    <a href="{% url "categories:categories" %}">All categories</a>
+
+    <br>
+    <br>
+
+    {% if category.author == user %}
+        <a href="{% url "categories:category_edit" category_id=category.id %}">Edit current category</a>
+    {% endif %}
+    <br>
+    <br>
+    <div>
+    <h4>Questions:</h4>
+    {% for question in questions %}
+        <a href="{% url "questions:question_details" question_id=question.id %}">
+                {{ question.name|default:"no name" }}
+        </a><br>
+    {% endfor %}
+    </div>
+{% endblock %}
