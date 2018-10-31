@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 import json
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponse
+
+from core.models import User
 from models import Category
 from forms import CategoryViewsForm, CategoryForm
 from django.views.generic import UpdateView, ListView
@@ -62,8 +64,6 @@ class CategoryViews(ListView):
 class CategoryCreate(CreateView):
     model = Category
     fields = 'name'
-    context_object_name = 'answer'
-    template_name = 'answers/answer_create.html'
 
     def get(self, request, **kwargs):
         form = self.get_form()
@@ -131,11 +131,12 @@ def category_views(request):
     return context_json
 
 
-@jsonrpc_method('category.create')
-def category_create(request, name, author):
-    category = Category(name=name, author=author)
-    category.save()
-    return {"result": "success"}
+# @jsonrpc_method('category.create')
+# def category_create(request, name, author):
+#     user = User.objects.get(username=author)
+#     category = Category(name=name, author=user)
+#     category.save()
+#     return {"result": "success"}
 
 
 @jsonrpc_method('category.edit')
