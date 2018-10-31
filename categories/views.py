@@ -35,22 +35,27 @@ class CategoryDetails(DetailView):
 
 
 class CategoryViews(ListView):
+    categories = Category
 
-    @jsonrpc_method('category.views')
-    def get(self):
-        categories = Category.objects.all()
-        form = CategoryViewsForm(self.GET)
+    def get_queryset(self):
+        queryset = Category.objects.all()
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        categories = self.get_queryset()
+        form = CategoryViewsForm(request.GET)
         if form.is_valid():
             data = form.cleaned_data
             if data['sort']:
                 categories = categories.order_by(data['sort'])
             if data['search']:
                 categories = categories.filter(name__icontains=data['search'])
-        context_json = json.dumps({
-            'result': 'success',
-            'categories': serializers.serialize("json", categories)
-        })
-        return context_json
+        context = {
+            'categories': categories,
+            'form': form
+        }
+
+        return render(request, "categories/category_views.html", context)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -96,3 +101,43 @@ class CategoryEdit(UpdateView):
     def form_valid(self, form):
         response = super(CategoryEdit, self).form_valid(form)
         return HttpResponse('valid')
+
+
+@jsonrpc_method('category.details')
+def category_details(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    context = {
+        'result': 'success',
+        'category': serializers.serialize("json", [category, ]),
+        'questions': serializers.serialize("json", category.questions.all().filter(is_archive=False))
+    }
+    return context
+
+
+@jsonrpc_method('category.views')
+def category_views(request):
+    categories = Category.objects.all()
+    form = CategoryViewsForm(request.GET)
+    if form.is_valid():
+        data = form.cleaned_data
+        if data['sort']:
+            categories = categories.order_by(data['sort'])
+        if data['search']:
+            categories = categories.filter(name__icontains=data['search'])
+    context_json = {
+        'result': 'success',
+        'categories': serializers.serialize("json", categories)
+    }
+    return context_json
+
+
+@jsonrpc_method('category.create')
+def category_create(request, name, author):
+    category = Category(name=name, author=author)
+    category.save()
+    return {"result": "success"}
+
+
+@jsonrpc_method('category.edit')
+def category_edit(request):
+    pass
