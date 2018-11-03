@@ -21,7 +21,8 @@ class Answer(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='answers',
-        verbose_name='Author'
+        verbose_name='Author',
+        on_delete=models.CASCADE
     )
     likes = models.ManyToManyField(
         Like,
@@ -36,7 +37,8 @@ class Answer(models.Model):
     question = models.ForeignKey(
         Question,
         related_name='answers',
-        verbose_name='Answer\'s question'
+        verbose_name='Answer\'s question',
+        on_delete=models.CASCADE
     )
     is_archive = models.BooleanField(
         default=False,

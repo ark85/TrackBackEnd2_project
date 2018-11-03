@@ -20,9 +20,9 @@ from jsonrpc import jsonrpc_site
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^categories/', include('categories.urls', namespace='categories')),
-    url(r'^questions/', include('questions.urls', namespace='questions')),
-    url(r'^answers/', include('answers.urls', namespace='answers')),
+    url(r'^categories/', include(('categories.urls', 'categories'), namespace='categories')),
+    url(r'^questions/', include(('questions.urls', 'questions'), namespace='questions')),
+    url(r'^answers/', include(('answers.urls', 'answers'), namespace='answers')),
 
-    url(r'', include('core.urls', namespace='core')),
+    url(r'', include(('core.urls', 'core'), namespace='core')),
 ]

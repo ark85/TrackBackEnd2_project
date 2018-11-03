@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils.decorators import method_decorator
 
-from models import Answer
+from answers.models import Answer
 from django.views.generic import UpdateView
 from django.views.generic import CreateView
 from django.views.generic import DetailView

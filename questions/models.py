@@ -20,7 +20,8 @@ class Question(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='questions',
-        verbose_name='Author'
+        verbose_name='Author',
+        on_delete=models.CASCADE
     )
     categories = models.ManyToManyField(
         Category,

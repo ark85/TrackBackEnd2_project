@@ -19,7 +19,8 @@ class Comment(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='comments',
-        verbose_name='Author'
+        verbose_name='Author',
+        on_delete=models.CASCADE
     )
     likes = models.ManyToManyField(
         Like,

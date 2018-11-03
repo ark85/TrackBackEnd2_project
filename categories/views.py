@@ -5,9 +5,9 @@ import json
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404, redirect, reverse, HttpResponse
 
+from categories.forms import CategoryViewsForm
+from categories.models import Category
 from core.models import User
-from models import Category
-from forms import CategoryViewsForm, CategoryForm
 from django.views.generic import UpdateView, ListView
 from django.views.generic import CreateView
 from django.views.generic import DetailView

@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import View
-from forms import RegisterForm
+from core.forms import RegisterForm
 from django.contrib.auth import authenticate, login
+
 
 def index(request):
     return render(request, "core/index.html", {})
@@ -41,7 +42,6 @@ class Register(View):
 
 
 class Login(LoginView):
-
     template_name = 'core/login.html'
 
     def get_success_url(self):
@@ -49,7 +49,6 @@ class Login(LoginView):
 
 
 class Logout(LogoutView):
-
     template_name = 'core/logout.html'
 
     def get_success_url(self):

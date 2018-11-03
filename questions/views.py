@@ -5,9 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils.decorators import method_decorator
 
-from models import Question
+from questions.models import Question
 from django.views.generic import UpdateView, CreateView, DetailView, ListView
-from forms import QuestionViewsForm
+from questions.forms import QuestionViewsForm
 
 
 class QuestionDetails(DetailView):
