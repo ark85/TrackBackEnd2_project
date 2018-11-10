@@ -87,10 +87,10 @@ WSGI_APPLICATION = 'stackoverflow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stack_db',
-        'USER': 'stack',
-        'PASSWORD': 'stack',
-        'HOST': 'localhost',
+        'NAME': os.environ["DB_NAME"],
+        'USER': os.environ["DB_USER"],
+        'PASSWORD': os.environ["DB_PASSWORD"],
+        'HOST': os.environ["DB_HOST"],
     }
 }
 
