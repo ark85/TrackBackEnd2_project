@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.conf import settings
 
@@ -8,12 +9,12 @@ from questions.models import Question
 from likes.models import Like
 from comments.models import Comment
 
+
 # Create your models here.
 
 # -*- coding: utf-8 -*-
 
 class Answer(models.Model):
-
     content = models.CharField(
         max_length=500,
         verbose_name='Answer content'
@@ -24,16 +25,8 @@ class Answer(models.Model):
         verbose_name='Author',
         on_delete=models.CASCADE
     )
-    likes = models.ManyToManyField(
-        Like,
-        blank=True,
-        related_name="answer_likes"
-    )
-    comments = models.ManyToManyField(
-        Comment,
-        blank=True,
-        related_name="answer_comments"
-    )
+    likes = GenericRelation(Like)
+    comments = GenericRelation(Comment)
     question = models.ForeignKey(
         Question,
         related_name='answers',
@@ -50,6 +43,14 @@ class Answer(models.Model):
 
     def __unicode__(self):
         return self.content
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
+
+    @property
+    def get_comments(self):
+        return self.comments
 
     class Meta:
         verbose_name = 'Answer'

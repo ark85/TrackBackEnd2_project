@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'jsonrpc',
+    'social_django',
     'core.apps.CoreConfig',
     'categories.apps.CategoriesConfig',
     'questions.apps.QuestionsConfig',
@@ -73,6 +74,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -84,13 +87,22 @@ WSGI_APPLICATION = 'stackoverflow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.environ["DB_NAME"],
+#         'USER': os.environ["DB_USER"],
+#         'PASSWORD': os.environ["DB_PASSWORD"],
+#         'HOST': os.environ["DB_HOST"],
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ["DB_NAME"],
-        'USER': os.environ["DB_USER"],
-        'PASSWORD': os.environ["DB_PASSWORD"],
-        'HOST': os.environ["DB_HOST"],
+        'NAME': "stack_db",
+        'USER': "stack",
+        'PASSWORD': "stack",
+        'HOST': "localhost",
     }
 }
 
@@ -141,3 +153,20 @@ LOGOUT_URL = 'logout'
 REGISTER_URL = 'register'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '6748615'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'hcDr1rnHYncKtMnoxd8i'
+
+SOCIAL_AUTH_GITHUB_KEY = 'd8fb09bc2a70028bff38'
+SOCIAL_AUTH_GITHUB_SECRET = '0ca6adfef4737e6bcfd73e070c569b7287af4718'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'

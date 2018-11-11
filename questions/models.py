@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.conf import settings
 from categories.models import Category
 from likes.models import Like
 from comments.models import Comment
 
-class Question(models.Model):
 
+class Question(models.Model):
     name = models.CharField(
         max_length=255,
         verbose_name='Question name'
@@ -30,18 +31,8 @@ class Question(models.Model):
         related_name='questions',
         verbose_name='Question\'s categories'
     )
-    likes = models.ManyToManyField(
-        Like,
-        blank=True,
-        related_name="question_likes",
-        verbose_name='Question\'s likes'
-    )
-    comments = models.ManyToManyField(
-        Comment,
-        blank=True,
-        related_name="question_comments",
-        verbose_name='Question\'s comments'
-    )
+    likes = GenericRelation(Like)
+    comments = GenericRelation(Comment)
     is_archive = models.BooleanField(
         default=False,
         verbose_name='Question in archive'
@@ -54,6 +45,14 @@ class Question(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
+
+    @property
+    def get_comments(self):
+        return self.comments
 
     class Meta:
         verbose_name = 'Question'

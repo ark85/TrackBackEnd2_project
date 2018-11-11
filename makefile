@@ -4,5 +4,5 @@ test: up
 	docker-compose exec stack_app python3 /app/manage.py test
 migrate: up
 	docker-compose exec stack_app python3 /app/manage.py migrate
-run: up
+run: migrate
 	docker-compose exec stack_app python3 /app/manage.py runserver

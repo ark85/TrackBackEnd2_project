@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils.decorators import method_decorator
 
+from likes.services import add_like
 from questions.models import Question
 from django.views.generic import UpdateView, CreateView, DetailView, ListView
 from questions.forms import QuestionViewsForm
@@ -94,3 +95,7 @@ class QuestionCreate(CreateView):
 
     def get_success_url(self):
         return reverse('questions:question_details', kwargs={'question_id': self.object.pk})
+
+
+def question_like(request):
+    add_like(Question.objects.get(0), request.POST.user)
