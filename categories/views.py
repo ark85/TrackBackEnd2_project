@@ -63,7 +63,7 @@ class CategoryViews(ListView):
 @method_decorator(login_required, name='dispatch')
 class CategoryCreate(CreateView):
     model = Category
-    fields = 'name'
+    fields = 'name',
 
     def get(self, request, **kwargs):
         form = self.get_form()
@@ -131,14 +131,29 @@ def category_views(request):
     return context_json
 
 
-# @jsonrpc_method('category.create')
-# def category_create(request, name, author):
-#     user = User.objects.get(username=author)
-#     category = Category(name=name, author=user)
-#     category.save()
-#     return {"result": "success"}
+@jsonrpc_method('category.create', authenticated=True)
+def category_create(request, name):
+    import sys
+    sys.stderr.write("!!!!!!!!!!!!")
+    sys.stderr.write(str(request.method))
+    sys.stderr.write(str(request.user))
+    sys.stderr.write(str(request.user.username))
+    sys.stderr.write(str(name))
+    if request.method == 'POST':
+        user = User.objects.get(username=request.user.username)
+        category = Category(name=name, author=user)
+        category.save()
+        return {"result": "success"}
+    return {"error": "not post"}
 
 
 @jsonrpc_method('category.edit')
-def category_edit(request):
-    pass
+def category_edit(request, category_id, name):
+    category = get_object_or_404(Category, id=category_id)
+    if request.method == 'POST':
+        user = User.objects.get(username=request.user.username)
+        category.name = name
+        category.author = user
+        category.save()
+        return {"result": "success"}
+    return {"error": "not post"}

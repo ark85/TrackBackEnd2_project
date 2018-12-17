@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils.decorators import method_decorator
+from jsonrpc import jsonrpc_method
 
 from likes.services import add_like
 from questions.models import Question
@@ -99,3 +101,44 @@ class QuestionCreate(CreateView):
 
 def question_like(request):
     add_like(Question.objects.get(0), request.POST.user)
+
+
+@jsonrpc_method('question.details')
+def question_details(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    context = {
+        'result': 'success',
+        'question': serializers.serialize("json", [question, ]),
+        'answer': serializers.serialize("json", question.answers.all().filter(is_archive=False)),
+    }
+    return context
+
+
+@jsonrpc_method('question.views')
+def question_views(request):
+    questions = Question.objects.all()
+    form = QuestionViewsForm(request.GET)
+    if form.is_valid():
+        data = form.cleaned_data
+        if data['sort']:
+            questions = questions.order_by(data['sort'])
+        if data['search']:
+            questions = questions.filter(name__icontains=data['search'])
+    context_json = {
+        'result': 'success',
+        'questions': serializers.serialize("json", questions)
+    }
+    return context_json
+
+
+# @jsonrpc_method('category.create')
+# def category_create(request, name, author):
+#     user = User.objects.get(username=author)
+#     category = Category(name=name, author=user)
+#     category.save()
+#     return {"result": "success"}
+
+
+@jsonrpc_method('category.edit')
+def category_edit(request):
+    pass
