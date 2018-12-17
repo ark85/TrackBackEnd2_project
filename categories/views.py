@@ -108,8 +108,8 @@ def category_details(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     context = {
         'result': 'success',
-        'category': serializers.serialize("json", [category, ]),
-        'questions': serializers.serialize("json", category.questions.all().filter(is_archive=False))
+        'category': json.loads(serializers.serialize("json", [category, ])),
+        'questions': json.loads(serializers.serialize("json", category.questions.all().filter(is_archive=False)))
     }
     return context
 
@@ -126,32 +126,26 @@ def category_views(request):
             categories = categories.filter(name__icontains=data['search'])
     context_json = {
         'result': 'success',
-        'categories': serializers.serialize("json", categories)
+        'categories': json.loads(serializers.serialize("json", categories))
     }
     return context_json
 
 
 @jsonrpc_method('category.create', authenticated=True)
-def category_create(request, name):
-    import sys
-    sys.stderr.write("!!!!!!!!!!!!")
-    sys.stderr.write(str(request.method))
-    sys.stderr.write(str(request.user))
-    sys.stderr.write(str(request.user.username))
-    sys.stderr.write(str(name))
+def category_create(request, name, author):
     if request.method == 'POST':
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.get(username=author)
         category = Category(name=name, author=user)
         category.save()
         return {"result": "success"}
     return {"error": "not post"}
 
 
-@jsonrpc_method('category.edit')
-def category_edit(request, category_id, name):
+@jsonrpc_method('category.edit', authenticated=True)
+def category_edit(request, category_id, name, author):
     category = get_object_or_404(Category, id=category_id)
     if request.method == 'POST':
-        user = User.objects.get(username=request.user.username)
+        user = User.objects.get(username=author)
         category.name = name
         category.author = user
         category.save()

@@ -87,24 +87,24 @@ WSGI_APPLICATION = 'stackoverflow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': os.environ["DB_NAME"],
-#         'USER': os.environ["DB_USER"],
-#         'PASSWORD': os.environ["DB_PASSWORD"],
-#         'HOST': os.environ["DB_HOST"],
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "stack_db",
-        'USER': "stack",
-        'PASSWORD': "stack",
-        'HOST': "localhost",
+        'NAME': os.environ["DB_NAME"],
+        'USER': os.environ["DB_USER"],
+        'PASSWORD': os.environ["DB_PASSWORD"],
+        'HOST': os.environ["DB_HOST"],
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': "stack_db",
+#         'USER': "stack",
+#         'PASSWORD': "stack",
+#         'HOST': "localhost",
+#     }
+# }
 
 TESTING = 'test' in sys.argv
 if TESTING:

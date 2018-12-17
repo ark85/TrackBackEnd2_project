@@ -36,5 +36,16 @@ class CategoryAPITest(TestCase):
                                     content_type="application/json")
         self.assertTrue(response.status_code == 200, "success")
 
+    def test_category_details(self):
+        request = self.request_data
+        request["method"] = "category.details"
+        request["params"] = {
+            "category_id": 1
+        }
+        response = self.client.post('/api/',
+                                    data=str(json.dumps(request)),
+                                    content_type="application/json")
+        self.assertTrue(response.status_code == 200, "success")
+
     def tearDown(self):
         print("Done")

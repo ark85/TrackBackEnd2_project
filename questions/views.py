@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.utils.decorators import method_decorator
 from jsonrpc import jsonrpc_method
 
+from categories.models import Category
+from core.models import User
 from likes.services import add_like
 from questions.models import Question
 from django.views.generic import UpdateView, CreateView, DetailView, ListView
@@ -108,8 +112,8 @@ def question_details(request, question_id):
     question = get_object_or_404(Question, id=question_id)
     context = {
         'result': 'success',
-        'question': serializers.serialize("json", [question, ]),
-        'answer': serializers.serialize("json", question.answers.all().filter(is_archive=False)),
+        'question': json.loads(serializers.serialize("json", [question, ])),
+        'answer': json.loads(serializers.serialize("json", question.answers.all().filter(is_archive=False))),
     }
     return context
 
@@ -126,19 +130,48 @@ def question_views(request):
             questions = questions.filter(name__icontains=data['search'])
     context_json = {
         'result': 'success',
-        'questions': serializers.serialize("json", questions)
+        'questions': json.loads(serializers.serialize("json", questions))
     }
     return context_json
 
 
-# @jsonrpc_method('category.create')
-# def category_create(request, name, author):
-#     user = User.objects.get(username=author)
-#     category = Category(name=name, author=user)
-#     category.save()
-#     return {"result": "success"}
+@jsonrpc_method('question.create', authenticated=True)
+def question_create(request, name, content, author, categories=None, is_archive=None):
+    if request.method == 'POST':
+        if is_archive is None:
+            archive = False
+        else:
+            archive = is_archive
+        category_list = []
+        if categories is not None:
+            categories = Category.objects.all()
+            for category in categories:
+                category_list.append(categories.filter(name=category))
+        user = User.objects.get(username=author)
+        question = Question(name=name, content=content, author=user, is_archive=archive, categories=category_list)
+        question.save()
+        return {"result": "success"}
+    return {"error": "not post"}
 
 
 @jsonrpc_method('category.edit')
-def category_edit(request):
-    pass
+def category_edit(request, question_id, author, name=None, content=None, categories=None, is_archive=None):
+    question = get_object_or_404(Question, id=question_id)
+    if request.method == 'POST':
+        if name is not None:
+            question.name = name
+        if content is not None:
+            question.content = content
+        if categories is not None:
+            category_list = []
+            categories = Category.objects.all()
+            for category in categories:
+                category_list.append(categories.filter(name=category))
+            question.categories = category_list
+        if is_archive is not None:
+            question.is_archive = is_archive
+        user = User.objects.get(username=author)
+        question.author = user
+        question.save()
+        return {"result": "success"}
+    return {"error": "not post"}
