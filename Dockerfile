@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-ADD . /app
+COPY . /app
 VOLUME /app
 RUN apt-get update
 RUN apt-get install -y python3.5 python3-pip libmysqlclient-dev

@@ -10,6 +10,6 @@ from comments.models import Comment
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = "content", "user"
-    search_fields = "content", "user__username"
+    list_display = "content", "author"
+    search_fields = "content", "author__username"
     list_filter = 'is_archive',

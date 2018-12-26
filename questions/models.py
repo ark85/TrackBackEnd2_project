@@ -32,7 +32,6 @@ class Question(models.Model):
         verbose_name='Question\'s categories'
     )
     likes = GenericRelation(Like)
-    comments = GenericRelation(Comment)
     is_archive = models.BooleanField(
         default=False,
         verbose_name='Question in archive'
@@ -49,10 +48,6 @@ class Question(models.Model):
     @property
     def total_likes(self):
         return self.likes.count()
-
-    @property
-    def get_comments(self):
-        return self.comments
 
     class Meta:
         verbose_name = 'Question'
